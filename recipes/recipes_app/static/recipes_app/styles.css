@@ -1,0 +1,33 @@
+body {
+    background-color: lightcoral;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: end;
+    padding-right: 0px;
+}
+
+.pages {
+    display: flex;
+    justify-content: end;
+}
+
+.link-pages {
+
+    border: 1px solid black;
+    border-bottom: 0px;
+    margin: 0;
+    padding: 10px 30px;
+    background: black;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-decoration: none;
+    color: white;
+}
+
+/*  modify #link1, #link2 and #link3 when 
+    user changes page */
+#link2, #link3 {
+    border-bottom: 1px solid black;
+}
