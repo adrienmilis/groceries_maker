@@ -1,5 +1,14 @@
 from django.db import models
 
+# custom CharField to ensure name is always in lowercase
+class NameField(models.CharField):
+    def __init__(self, *args, **kwargs):
+        super(NameField, self).__init__(*args, **kwargs)
+
+    def get_prep_value(self, value):
+        return str(value).lower()
+
+
 class Ingredient(models.Model):
 
     FRUITS_AND_VEGGIES = 'F_V'
@@ -13,7 +22,7 @@ class Ingredient(models.Model):
     PREMADE = 'PR'
     OTHER = 'O'
 
-    TYPE_CHOICES = [
+    CATEGORY_CHOICES = [
         (FRUITS_AND_VEGGIES, 'Fruits and vegetables'),
         (DAIRY, 'Dairy'),
         (FROZEN, 'Frozen'),
@@ -34,12 +43,12 @@ class Ingredient(models.Model):
     UNIT_CHOICES = [
         (MILLILITERS, 'ml'),
         (GRAMS, 'g'),
-        (UNITS, 'u'),
+        (UNITS, 'units'),
     ]
 
-    name = models.CharField(max_length=50)
+    name = NameField(max_length=50, unique=True)
     unit = models.CharField(max_length=20, choices=UNIT_CHOICES)
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
 
     def __str__(self):
         return self.name
@@ -47,7 +56,7 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
 
-    name = models.CharField(max_length=100)
+    name = NameField(max_length=100, unique=True)
     cooking_time = models.DurationField()
     ingredient_ids = models.ManyToManyField(Ingredient, through='IngredientQuantity')
 
