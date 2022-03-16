@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form method="post" action="https://httpbin.org/post">
+
+        <label for="recipe_name">Recipe Name</label><br>
+        <input type="text" id="recipe_name" name="recipe_name" value="HTML" required><br>
+
+        <label for="recipe_cooking_time">Cooking time (minutes)</label><br>
+        <input type="number" max="10000" id="recipe_cooking_time" name="recipe_cooking_time" required><br>
+
+        <div class="recipe_ingredients">
+
+            <!-- first ingredient -->
+            <label for="recipe_ingredients_1">Ingredient 1 - Quantity</label><br>
+            <select name="recipe_ingredient_1" id="recipe_ingredient_1" required>
+                <option value="Olive oil">1</option>
+                <option value="Oignons">2</option>
+                <option value="Pasta">3</option>
+                <option value="Greek pasta">4</option>
+                <option value="Potato">5</option>
+            </select>
+            <input type="number" max="10000" id="ingredient_quantity_1" name="ingredient_1_quantity"><br>
+
+            <!-- second ingredient -->
+            <label for="recipe_ingredient_2">Ingredient 2 - Quantity</label><br>
+            <select name="recipe_ingredient_2" id="recipe_ingredient_2">
+                <option value="Olive oil">1</option>
+                <option value="Oignons">2</option>
+                <option value="Pasta">3</option>
+                <option value="Greek pasta">4</option>
+                <option value="Potato">5</option>
+            </select>
+            <input type="number" max="10000" id="ingredient_quantity_2" name="ingredient_2_quantity"><br>
+
+            <!-- third ingredient -->
+            <label for="recipe_ingredient_3">Ingredient 3 - Quantity</label><br>
+            <select name="recipe_ingredient_3" id="recipe_ingredient_3">
+                <option value="Olive oil">1</option>
+                <option value="Oignons">2</option>
+                <option value="Pasta">3</option>
+                <option value="Greek pasta">4</option>
+                <option value="Potato">5</option>
+            </select>
+            <input type="number" max="10000" id="ingredient_quantity_3" name="ingredient_3_quantity"><br>
+        </div>
+
+        <button type="button" onclick="addField();">Add a field</button><br><br>
+        <button type="submit" value="Submit" id="submit">Submit</button>
+
+    </form>
+
+    <script src="./addIngredients.js"></script>
+</body>
+</html>
