@@ -43,8 +43,8 @@
         <div class="row mt-5">
             
             <!-- Recipe FORM -->
-            <form action="http://httpbin.org/post" method="post" name="recipe_form">
-
+            <form action="recipe_form/" method="post" name="recipe_form">
+                {% csrf_token %}
                 <label for="recipe_name">Recipe Name</label><br>
                 <input type="text" id="recipe_name" name="recipe_name" required><br>
         
@@ -55,30 +55,30 @@
         
                     <!-- first ingredient -->
                     <label for="recipe_ingredients_1">Ingredient 1 - Quantity</label><br>
-                    <select class="select_ingredient" name="recipe_ingredient_1" id="recipe_ingredient_1" required>
+                    <select class="select_ingredient" name="recipe_ingredients" id="recipe_ingredient_1" required>
                         {% for ingr in ingredients %}
                             <option value="{{ ingr.0 }}">{{ ingr.1 }}</option>
                         {% endfor %}
                     </select>
-                    <input type="number" max="10000" id="ingredient_quantity_1" name="ingredient_1_quantity"><br>
+                    <input type="number" max="10000" id="ingredient_quantity_1" name="ingredients_quantity"><br>
         
                     <!-- second ingredient -->
                     <label for="recipe_ingredient_2">Ingredient 2 - Quantity</label><br>
-                    <select class="select_ingredient" name="recipe_ingredient_2" id="recipe_ingredient_2">
+                    <select class="select_ingredient" name="recipe_ingredients" id="recipe_ingredient_2">
                         {% for ingr in ingredients %}
                             <option value="{{ ingr.0 }}">{{ ingr.1 }}</option>
                         {% endfor %}
                     </select>
-                    <input type="number" max="10000" id="ingredient_quantity_2" name="ingredient_2_quantity"><br>
+                    <input type="number" max="10000" id="ingredient_quantity_2" name="ingredients_quantity"><br>
         
                     <!-- third ingredient -->
                     <label for="recipe_ingredient_3">Ingredient 3 - Quantity</label><br>
-                    <select class="select_ingredient" name="recipe_ingredient_3" id="recipe_ingredient_3">
+                    <select class="select_ingredient" name="recipe_ingredients" id="recipe_ingredient_3">
                         {% for ingr in ingredients %}
                             <option value="{{ ingr.0 }}">{{ ingr.1 }}</option>
                         {% endfor %}
                     </select>
-                    <input type="number" max="10000" id="ingredient_quantity_3" name="ingredient_3_quantity"><br>
+                    <input type="number" max="10000" id="ingredient_quantity_3" name="ingredients_quantity"><br>
                 </div>
         
                 <button type="button" onclick="addField();">Add a field</button><br><br>

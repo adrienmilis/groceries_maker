@@ -1,5 +1,7 @@
 from django import forms
 from .models import Ingredient, IngredientQuantity, Recipe
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, Field, Button
@@ -62,3 +64,17 @@ class IngredientForm(forms.Form):
 #         queryset=IngredientQuantity.objects.all()
 #         # widget=forms.SelectMultiple # CHOOSE A GOOD WIDGET
 #     )
+
+class RecipeForm(forms.ModelForm):
+
+    class Meta:
+        model = Recipe
+        fields = ['name', 'cooking_time', 'ingredient_ids']
+
+# this dummy form is used to validate the quantity field of our recipe FORM
+# and to clean its data in our view
+class DummyQuantityForm(forms.Form):
+
+    quantity = forms.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(10000.0)],
+    )

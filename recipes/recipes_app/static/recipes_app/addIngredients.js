@@ -25,7 +25,7 @@ function addField() {
     old_select = document.getElementById('recipe_ingredient_1');
     new_select = document.createElement('select');
     new_select.innerHTML = old_select.innerHTML;
-    new_select.setAttribute('name', `recipe_ingredient_${count}`);
+    new_select.setAttribute('name', `recipe_ingredients`);
     new_select.setAttribute('id', `recipe_ingredient_${count}`);
     new_select.setAttribute('class', "select_ingredient");
 
@@ -33,7 +33,7 @@ function addField() {
     input_qty = document.createElement('input');
     input_qty.setAttribute('type', 'number');
     input_qty.setAttribute('id', `ingredient_quantity_${count}`);
-    input_qty.setAttribute('name', `ingredient_quantity_${count}`);
+    input_qty.setAttribute('name', `ingredients_quantity`);
     input_qty.setAttribute('max', '10000');
 
     // br

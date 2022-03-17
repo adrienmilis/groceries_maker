@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # custom CharField to ensure name is always in lowercase
 class NameField(models.CharField):
@@ -57,7 +58,9 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
 
     name = NameField(max_length=100, unique=True)
-    cooking_time = models.DurationField()
+    cooking_time = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(10000)],
+    ) # or integer ?
     ingredient_ids = models.ManyToManyField(Ingredient, through='IngredientQuantity')
 
     def __str__(self):
@@ -67,7 +70,9 @@ class IngredientQuantity(models.Model):
 
     recipe_id = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient_id = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    quantity = models.FloatField()
+    quantity = models.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(10000.0)],
+    )
 
     class Meta:
         unique_together = [ ['recipe_id'], ['ingredient_id'] ]
