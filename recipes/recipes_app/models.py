@@ -74,5 +74,10 @@ class IngredientQuantity(models.Model):
         validators=[MinValueValidator(0.0), MaxValueValidator(10000.0)],
     )
 
+    def __str__(self):
+        return f'{self.recipe_id.name}: {self.ingredient_id.name} ({self.quantity}{self.ingredient_id.unit})'
+
     class Meta:
-        unique_together = [ ['recipe_id'], ['ingredient_id'] ]
+        constraints = [
+            models.UniqueConstraint(fields=['recipe_id', 'ingredient_id'], name='ingredient_unique_in_recipe')
+        ]

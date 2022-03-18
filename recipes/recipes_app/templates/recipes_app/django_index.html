@@ -55,30 +55,28 @@
         
                     <!-- first ingredient -->
                     <label for="recipe_ingredients_1">Ingredient 1 - Quantity</label><br>
+                    <!-- <input list="recipe_ingredient_1" id="recipe_ingredient_1_choice" name="recipe_ingredient_1_choice"/>
+                    <datalist class="select_ingredient" name="recipe_ingredients" id="recipe_ingredient_1"
+                            pattern="{% for ingr in ingredients %}{{ ingr.0 }}|{% endfor %}" required>
+                        {% if ingredients %}
+                        {% for ingr in ingredients %}
+                            <option data-value="{{ ingr.0 }}">{{ ingr.1 }}</option>
+                        {% endfor %}
+                        {% else %}
+                            <option disabled selected value="">Add an ingredient first</option>
+                        {% endif %}
+                    </datalist> -->
                     <select class="select_ingredient" name="recipe_ingredients" id="recipe_ingredient_1" required>
+                        {% if ingredients %}
                         {% for ingr in ingredients %}
                             <option value="{{ ingr.0 }}">{{ ingr.1 }}</option>
                         {% endfor %}
+                        {% else %}
+                            <option disabled selected value="">Add an ingredient first</option>
+                        {% endif %}
                     </select>
                     <input type="number" max="10000" id="ingredient_quantity_1" name="ingredients_quantity"><br>
         
-                    <!-- second ingredient -->
-                    <label for="recipe_ingredient_2">Ingredient 2 - Quantity</label><br>
-                    <select class="select_ingredient" name="recipe_ingredients" id="recipe_ingredient_2">
-                        {% for ingr in ingredients %}
-                            <option value="{{ ingr.0 }}">{{ ingr.1 }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="number" max="10000" id="ingredient_quantity_2" name="ingredients_quantity"><br>
-        
-                    <!-- third ingredient -->
-                    <label for="recipe_ingredient_3">Ingredient 3 - Quantity</label><br>
-                    <select class="select_ingredient" name="recipe_ingredients" id="recipe_ingredient_3">
-                        {% for ingr in ingredients %}
-                            <option value="{{ ingr.0 }}">{{ ingr.1 }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="number" max="10000" id="ingredient_quantity_3" name="ingredients_quantity"><br>
                 </div>
         
                 <button type="button" onclick="addField();">Add a field</button><br><br>

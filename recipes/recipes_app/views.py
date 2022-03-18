@@ -51,31 +51,97 @@ def to_user_friendly_names(name):
 # 'name': ['test'],
 # 'cooking_time': ['test'],
 # 'ingredient_ids': ['1', '2', '3']}
-def recipe_form(request):
+def recipe_form_2(request):
 
     print(request.POST)
 
     form_data = QueryDict(mutable=True)
-    form_data.update({
-        'csrfmiddlewaretoken': request.POST['csrfmiddlewaretoken'],
-        'name': request.POST['recipe_name'],
-        'cooking_time': request.POST['recipe_cooking_time'],
-        'ingredient_ids': request.POST['recipe_ingredients']
-    })
+    # form_data.update({
+    #     'csrfmiddlewaretoken': request.POST['csrfmiddlewaretoken'],
+    #     'name': request.POST['recipe_name'],
+    #     'cooking_time': request.POST['recipe_cooking_time'],
+    #     # 'ingredient_ids': request.POST.getlist('recipe_ingredients')
+    #     'ingredient_ids': [1,2,3]
+    # })
+    form_data = request.POST({'csrfmiddlewaretoken': request.POST['csrfmiddlewaretoken']})
+    print(form_data['ingredient_ids'])
     recipe_form = RecipeForm(form_data)
 
     s = ''
     if not recipe_form.is_valid():
-        return (HttpResponse('not valid'))
+        return (HttpResponse(f'not valid: {recipe_form.errors}'))
 
+    list_of_cleaned_quantities = []
     for elem in request.POST.getlist('ingredients_quantity'):
 
         quantity_data = QueryDict(f'quantity={elem}')
         quantity_form = DummyQuantityForm(quantity_data)
         if not quantity_form.is_valid():
-            return (HttpResponse('not valid'))
+            return (HttpResponse(f'not valid: {quantity_form.errors}'))
+        # quantity is valid
+        list_of_cleaned_quantities.append(quantity_form.cleaned_data['quantity'])
+
 
     # if we made it here, form data is valid.
     # we can generate the recipe model
 
-    
+# USE CREATE OR CONSTRUCTOR ??
+    # new_recipe = Recipe.objects.create(
+    #     name=recipe_form.cleaned_data['name'],
+    #     cooking_time=recipe_form.cleaned_data['cooking_time'] #str or int ??
+    # )
+    for ingr in enumerate(recipe_form.cleaned_data['ingredient_ids']):
+        print(ingr)
+    # for index, ingr in enumerate(recipe_form.cleaned_data['ingredient_ids']):
+    #     print(ingr)
+    #     print(list_of_cleaned_quantities[index])
+    # for index, ingr in enumerate(recipe_form.cleaned_data['ingredient_ids']):
+    #     new_recipe.ingredient_ids.add(
+    #         Ingredient.objects.get(pk=ingr),
+    #         through_defaults={'quantity': list_of_cleaned_quantities[index]}
+    #     )
+    # new_recipe.save()
+    return (HttpResponse(f'New recipe {new_recipe.name} successfully added to database. Ingredient ids: {new_recipe.ingredient_ids.all()}, name: {new_recipe.name}, cooking_time: {new_recipe.cooking_time}'))
+
+
+def recipe_form(request):
+
+    print(request.POST)
+    print(request.POST.getlist('recipe_ingredients'))
+    my_dic = {
+        'csrfmiddlewaretoken': request.POST.get('csrfmiddlewaretoken'),
+        'name': request.POST.get('recipe_name'),
+        'cooking_time': request.POST.get('recipe_cooking_time'),
+        'ingredient_ids': request.POST.getlist('recipe_ingredients')
+    }
+    recipe_form = RecipeForm(my_dic)
+    if not recipe_form.is_valid():
+        return HttpResponse(f'not valid: {recipe_form.errors}')
+
+    ingredient_ids_with_qty = my_dic['ingredient_ids']
+    for index, qty in enumerate(request.POST.getlist('ingredients_quantity')):
+        # sanitize quantity
+        quantity_form = DummyQuantityForm({'quantity': qty})
+        if not quantity_form.is_valid():
+            return HttpResponse(f'qty not valid: {quantity_form.errors}')
+        # associate it with its ingredient id
+        ingredient_ids_with_qty[index] = [ingredient_ids_with_qty[index], qty]
+
+    # create the new recipe object
+    new_recipe = Recipe.objects.create(
+        name=recipe_form.cleaned_data['name'],
+        cooking_time=recipe_form.cleaned_data['cooking_time'],
+    )
+
+    # add its ingredients and quantities
+    # for id, qty in ingredient_ids_with_qty:
+    #     print('in loop')
+    #     print(Ingredient.objects.get(pk=id))
+    for ingr_id, qty in ingredient_ids_with_qty:
+        new_recipe.ingredient_ids.add(
+            Ingredient.objects.get(pk=ingr_id),
+            through_defaults={'quantity': qty}
+        )
+    new_recipe.save()
+
+    return HttpResponse('okkkkk')

@@ -12,7 +12,7 @@
     - validate the data put in those fields
 */
 
-let count = 3;
+let count = 1;
 function addField() {
     ++count;
 
